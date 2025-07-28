@@ -1,0 +1,11 @@
+Model Information:
+* title:	Tesla Model X
+* source:	https://sketchfab.com/3d-models/tesla-model-x-6a5469a1b776431cb1e1e17a72a2c4f5
+* author:	Abdul.Hannan (https://sketchfab.com/Abdul.Hannan)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Tesla Model X" (https://sketchfab.com/3d-models/tesla-model-x-6a5469a1b776431cb1e1e17a72a2c4f5) by Abdul.Hannan (https://sketchfab.com/Abdul.Hannan) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

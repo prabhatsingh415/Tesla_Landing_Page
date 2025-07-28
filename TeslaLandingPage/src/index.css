@@ -1,0 +1,19 @@
+@import "tailwindcss";
+
+:root {
+    --color-bg: #000000;
+    --color-tesla-red: #e31937;
+    --color-bright-white: #ffffff;
+    --color-steel-gray: #1a1a1a;
+    --color-neon: #00fff7;
+    --color-shadow-gray: #aaaaaa;
+    --fonts: 'Orbitron', 'sans-serif';
+}
+
+body {
+    background-color: var(--color-bg);
+    color: var(--color-tesla-red);
+    font-family: var(--fonts);
+}
+
+
