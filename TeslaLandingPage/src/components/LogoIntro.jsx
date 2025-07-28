@@ -1,4 +1,4 @@
-import {useRef} from "react"
+import {useEffect, useRef, useState} from "react"
 import {Center, Environment, OrbitControls, useGLTF} from "@react-three/drei";
 import {Canvas, useFrame} from "@react-three/fiber";
 
@@ -36,6 +36,29 @@ const Teslalogo = () => {
 
 function LogoIntro() {
 
+    const [fadeOut, setFadeOut] = useState(false);
+    const lastScrollY = useRef(0);
+
+    useEffect(() => {
+
+        const handleScroll = () => {
+            const currentScrollY = window.scrollY;
+
+            if (currentScrollY > lastScrollY.current) {
+                // 👇 Scrolling down
+                setFadeOut(true);
+            } else {
+                // 👆 Scrolling up
+                setFadeOut(false);
+            }
+
+            lastScrollY.current = currentScrollY; // Update the scroll position
+        }
+        window.addEventListener("scroll", handleScroll);
+        return () => {
+            window.removeEventListener("scroll", handleScroll);
+        }
+    })
     return (
         <div className="flex flex-wrap items-center justify-center gap-y-5">
             <div className="w-full h-screen">
@@ -59,13 +82,13 @@ function LogoIntro() {
                 </Canvas>
             </div>
             <div className="absolute bottom-10 text-center">
-                <h1 className="text-[var(--color-bright-white)]  text-[100px] uppercase">Tesla</h1>
+                <h1 className={`text-[var(--color-bright-white)] text-[100px] uppercase animate__animated animate__fadeIn animate__slower ${fadeOut ? "animate__fadeOut" : "animate__fadeIn"}`}>Tesla</h1>
 
-                <p className="text-[var(--color-tesla-red)]  animate-pulse text-2xl italic ">
+                <p className={`text-[var(--color-tesla-red)] text-2xl italic animate__animated animate__fadeIn animate__slower ${fadeOut ? "animate__fadeOut" : "animate__fadeIn"}`}>
                     Accelerating the Future
                 </p>
 
-                <p className="text-[var(--color-shadow-gray)]  animate-pulse  text-lg">
+                <p className={`text-[var(--color-shadow-gray)] text-lg animate__animated animate__fadeIn animate__slower ${fadeOut ? "animate__fadeOut" : "animate__fadeIn"}`}>
                     A project by Prabhat Singh
                 </p>
             </div>
