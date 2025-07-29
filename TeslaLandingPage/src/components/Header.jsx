@@ -4,7 +4,7 @@ import React from "react";
 function Header() {
     return (
         <div
-            className="flex flex-wrap h-14 w-full bg-[var(--color-steel-gray)] rounded-2xl border-solid border-2 border-white text- text-center ">
+            className="flex flex-wrap h-14 w-full bg-[var(--color-steel-gray)] rounded-2xl border-solid border-2 border-white text- text-center z-40">
 
             <div className="my-3 w-2/5 flex place-content-start ">
                 <a href="/"

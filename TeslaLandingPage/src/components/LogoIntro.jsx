@@ -25,7 +25,7 @@ const Teslalogo = () => {
     })
     return (
 
-        <group ref={ref} position={[0, 0.5, 0]}>
+        <group ref={ref} position={[0, 0.75, 0]}>
             <Center>
                 <primitive object={gltf.scene} scale={0.75}/>
                 //projecting model on screen

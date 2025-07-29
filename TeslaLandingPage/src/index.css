@@ -6,15 +6,36 @@
     --color-tesla-red: #e31937;
     --color-bright-white: #ffffff;
     --color-steel-gray: #1a1a1a;
-    --color-neon: #00fff7;
+    --color-neon: #00f9f2;
     --color-shadow-gray: #aaaaaa;
     --fonts: 'Orbitron', 'sans-serif';
 }
 
 body {
+
+    margin: 0;
+    padding: 0;
     background-color: var(--color-bg);
     color: var(--color-tesla-red);
     font-family: var(--fonts);
 }
 
+.link-underline {
+    position: relative;
+    display: inline-block;
+}
 
+.link-underline::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 2px;
+    width: 0;
+    background-color: var(--color-neon); /* or use var(--color-tesla-red) */
+    transition: width 0.3s ease-in-out;
+}
+
+.link-underline:hover::after {
+    width: 100%;
+}
