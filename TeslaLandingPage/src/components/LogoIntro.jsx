@@ -60,8 +60,8 @@ function LogoIntro() {
         }
     })
     return (
-        <div className="flex flex-wrap items-center justify-center gap-y-5">
-            <div className="w-full h-screen">
+        <div className="flex flex-wrap items-center justify-center ">
+            <div className="w-full h-[80vh] min-h-[400px] relative z-10">
                 <Canvas>
                     <ambientLight intensity={0.5}/>
                     <Environment preset="sunset"/>
@@ -81,8 +81,8 @@ function LogoIntro() {
                                    maxPolarAngle={Math.PI / 2}/>
                 </Canvas>
             </div>
-            <div className="absolute bottom-10 text-center">
-                <h1 className={`text-[var(--color-bright-white)] text-[100px] uppercase animate__animated animate__fadeIn animate__slower ${fadeOut ? "animate__fadeOut" : "animate__fadeIn"}`}>Tesla</h1>
+            <div className="w-full absolute bottom-10 text-center">
+                <h1 className={`text-[var(--color-bright-white)] text-6xl lg:text-[100px] uppercase animate__animated animate__fadeIn animate__slower ${fadeOut ? "animate__fadeOut" : "animate__fadeIn"}`}>Tesla</h1>
 
                 <p className={`text-[var(--color-tesla-red)] text-2xl italic animate__animated animate__fadeIn animate__slower ${fadeOut ? "animate__fadeOut" : "animate__fadeIn"}`}>
                     Accelerating the Future

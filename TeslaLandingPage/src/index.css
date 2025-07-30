@@ -1,6 +1,7 @@
 @import "tailwindcss";
 @import 'animate.css';
 
+
 :root {
     --color-bg: #000000;
     --color-tesla-red: #e31937;
@@ -10,11 +11,12 @@
     --color-shadow-gray: #aaaaaa;
     --fonts: 'Orbitron', 'sans-serif';
 }
-
-body {
-
+ 
+body, html {
     margin: 0;
     padding: 0;
+    height: 100%;
+    width: 100%;
     background-color: var(--color-bg);
     color: var(--color-tesla-red);
     font-family: var(--fonts);
@@ -39,3 +41,4 @@ body {
 .link-underline:hover::after {
     width: 100%;
 }
+
