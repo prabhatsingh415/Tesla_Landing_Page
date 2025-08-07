@@ -4,7 +4,7 @@ import {Canvas, useFrame} from "@react-three/fiber";
 
 const Teslalogo = () => {
     const gltf = useGLTF("/threeDModels/tesla-logo/source/tesla/tesla.gltf")
-    const ref = useRef();
+    const ref = useRef(null);
 
     const timer = useRef(0);
     const speed = useRef(0.75);
