@@ -1,24 +1,34 @@
-import { useEffect } from "react";
+import { useGSAP } from "@gsap/react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
-export default function useSlideUp(ref, delay = 0, duration = 1) {
-  useEffect(() => {
+export default function useSlideUp(
+  ref,
+  containerRef = null,
+  delay = 1,
+  duration = 2
+) {
+  useGSAP(() => {
     if (!ref.current) return;
 
-    gsap.from(ref.current, {
-      y: 50,
+    const section = containerRef?.current || window;
+
+    return gsap.from(ref.current, {
+      y: -100,
       opacity: 0,
       duration: duration,
       delay: delay,
       ease: "power3.out",
       scrollTrigger: {
-        trigger: ref.current,
-        start: "top 80%",
+        trigger: containerRef?.current || ref.current, // horizontal scroll section
+        scroller: window, // hum window scroll ke hisaab se trigger kar rahe
+        start: "top 80%", // jab section top 100px from viewport top aaye
         toggleActions: "play none none none",
+        markers: true,
+        scrub: true,
       },
     });
-  }, [ref, delay, duration]);
+  }, [ref, containerRef, delay, duration]);
 }

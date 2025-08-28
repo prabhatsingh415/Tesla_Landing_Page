@@ -9,19 +9,34 @@ import Model4 from "./Models/Model4";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
 import DetailsCard from "./DetailsCard";
+import useSlideUp from "../hooks/useSlideUp";
 gsap.registerPlugin(ScrollTrigger);
 
 function VehicleSection() {
   const sectionRef = useRef(null);
   const scrollRef = useRef(null);
   const spacerRef = useRef(null);
+  const div1Ref = useRef(null);
+  const div2Ref = useRef(null);
+  const div3Ref = useRef(null);
+  const div4Ref = useRef(null);
+  const model1TiltleRef = useRef(null);
+  const model2TiltleRef = useRef(null);
+  const model3TiltleRef = useRef(null);
+  const model4TiltleRef = useRef(null);
+  const model1DetailsRef = useRef(null);
+  const model2DetailsRef = useRef(null);
+  const model3DetailsRef = useRef(null);
+  const model4DetailsRef = useRef(null);
 
-  const h1Refs = [useRef(null), useRef(null), useRef(null), useRef(null)];
-  const cardRefs = [useRef(null), useRef(null), useRef(null), useRef(null)];
-
-  h1Refs.forEach((ref, i) => useSlideUp(ref, i * 0.2));
-  cardRefs.forEach((ref, i) => useSlideUp(ref, i * 0.3));
-
+  useSlideUp(model1TiltleRef, div1Ref);
+  useSlideUp(model1DetailsRef, div1Ref);
+  useSlideUp(model2TiltleRef, div2Ref);
+  useSlideUp(model2DetailsRef, div2Ref);
+  useSlideUp(model3TiltleRef, div3Ref);
+  useSlideUp(model3DetailsRef, div3Ref);
+  useSlideUp(model4TiltleRef, div4Ref);
+  useSlideUp(model4DetailsRef, div4Ref);
   useGSAP(() => {
     const section = sectionRef.current;
     const container = scrollRef.current;
@@ -54,15 +69,12 @@ function VehicleSection() {
         scrub: true,
         pin: true,
         pinSpacing: true,
-        markers: true,
       },
     });
 
     // Important: recalc markers & pin
     ScrollTrigger.refresh();
   });
-
-  const div1Ref = useRef(null);
 
   return (
     <>
@@ -88,10 +100,12 @@ function VehicleSection() {
             ref={div1Ref}
             className="w-screen h-full border-4 border-[var(--color-neon)] shadow-[inset_0_0_50px_10px_var(--color-neon)] rounded-xl  flex items-center justify-center text-white text-4xl"
           >
-            <h1 className="absolute top-[-1rem] text-[10rem] text-white/30 font-bold">
+            <h1
+              ref={model1TiltleRef}
+              className="absolute top-[-1rem] text-[10rem] text-white/30 font-bold"
+            >
               MODEL S PRIOR
             </h1>
-
             <Canvas camera={{ position: [0, 1.5, 8], fov: 45 }}>
               {/* Base ambient light (fill light for overall soft visibility) */}
               <ambientLight intensity={4} />
@@ -126,16 +140,24 @@ function VehicleSection() {
                 maxPolarAngle={Math.PI / 2}
               />
             </Canvas>
-            <DetailsCard
-              modelName="Tesla Model S Plaid"
-              topSpeed="322 km/h (200 mph)"
-              range="637 km (396 miles) – EPA estimated"
-              battery="100 kWh"
-              price="$112,990+"
-            />
+            <div ref={model1DetailsRef}>
+              <DetailsCard
+                modelName="Tesla Model S Plaid"
+                topSpeed="322 km/h (200 mph)"
+                range="637 km (396 miles) – EPA estimated"
+                battery="100 kWh"
+                price="$112,990+"
+              />
+            </div>
           </div>
-          <div className="w-screen h-full border-4 border-[var(--color-neon)] shadow-[inset_0_0_50px_10px_var(--color-neon)] rounded-xl flex items-center justify-center text-white text-4xl">
-            <h1 className="absolute top-[-1rem] text-[8rem] text-white/30 font-bold">
+          <div
+            ref={div2Ref}
+            className="w-screen h-full border-4 border-[var(--color-neon)] shadow-[inset_0_0_50px_10px_var(--color-neon)] rounded-xl flex items-center justify-center text-white text-4xl"
+          >
+            <h1
+              ref={model2TiltleRef}
+              className="absolute top-[-1rem] text-[8rem] text-white/30 font-bold"
+            >
               TESLA ROADSTER
             </h1>
             <Canvas camera={{ position: [0, 1.5, 8], fov: 45 }}>
@@ -172,16 +194,24 @@ function VehicleSection() {
                 maxPolarAngle={Math.PI / 2}
               />
             </Canvas>
-            <DetailsCard
-              modelName="Tesla Roadster"
-              topSpeed="400 km/h (250 mph)"
-              range="1,000 km (620 miles)"
-              battery="200 kWh"
-              price="$200,000+"
-            />
+            <div ref={model2DetailsRef}>
+              <DetailsCard
+                modelName="Tesla Roadster"
+                topSpeed="400 km/h (250 mph)"
+                range="1,000 km (620 miles)"
+                battery="200 kWh"
+                price="$200,000+"
+              />
+            </div>
           </div>
-          <div className="w-screen h-full border-4 border-[var(--color-neon)] shadow-[inset_0_0_50px_10px_var(--color-neon)] rounded-xl flex items-center justify-center text-white text-4xl">
-            <h1 className="absolute top-[-1rem] text-[8rem] text-white/30 font-bold">
+          <div
+            ref={div3Ref}
+            className="w-screen h-full border-4 border-[var(--color-neon)] shadow-[inset_0_0_50px_10px_var(--color-neon)] rounded-xl flex items-center justify-center text-white text-4xl"
+          >
+            <h1
+              ref={model3TiltleRef}
+              className="absolute top-[-1rem] text-[8rem] text-white/30 font-bold"
+            >
               TESLA MODEL 3
             </h1>
             <Canvas camera={{ position: [0, 1.5, 6], fov: 45 }}>
@@ -206,16 +236,24 @@ function VehicleSection() {
                 maxPolarAngle={Math.PI / 2}
               />
             </Canvas>
-            <DetailsCard
-              modelName="Tesla Model 3"
-              topSpeed="261 km/h (162 mph)"
-              range="614 km (382 miles) – Long Range AWD"
-              battery="82 kWh"
-              price="$46,990+" // Starting price for Long Range AWD in USD
-            />
+            <div ref={model3DetailsRef}>
+              <DetailsCard
+                modelName="Tesla Model 3"
+                topSpeed="261 km/h (162 mph)"
+                range="614 km (382 miles) – Long Range AWD"
+                battery="82 kWh"
+                price="$46,990+" // Starting price for Long Range AWD in USD
+              />
+            </div>
           </div>
-          <div className="w-screen h-full border-4 border-[var(--color-neon)] shadow-[inset_0_0_50px_10px_var(--color-neon)] rounded-xl  flex items-center justify-center text-black text-4xl">
-            <h1 className="absolute top-[-1rem] text-[8rem] text-white/30 font-bold">
+          <div
+            ref={div4Ref}
+            className="w-screen h-full border-4 border-[var(--color-neon)] shadow-[inset_0_0_50px_10px_var(--color-neon)] rounded-xl  flex items-center justify-center text-black text-4xl"
+          >
+            <h1
+              ref={model4TiltleRef}
+              className="absolute top-[-1rem] text-[8rem] text-white/30 font-bold"
+            >
               TESLA CYBER TRUCK
             </h1>
             <Canvas camera={{ position: [0, 1.5, 6], fov: 45 }}>
@@ -240,13 +278,15 @@ function VehicleSection() {
                 maxPolarAngle={Math.PI / 2}
               />
             </Canvas>
-            <DetailsCard
-              modelName="Tesla Cybertruck"
-              topSpeed="210 km/h (130 mph)"
-              range="805 km (500 miles)"
-              battery="≈200 kWh"
-              price="$69,900+"
-            />
+            <div ref={model4DetailsRef}>
+              <DetailsCard
+                modelName="Tesla Cybertruck"
+                topSpeed="210 km/h (130 mph)"
+                range="805 km (500 miles)"
+                battery="≈200 kWh"
+                price="$69,900+"
+              />
+            </div>
           </div>
         </div>
       </section>
