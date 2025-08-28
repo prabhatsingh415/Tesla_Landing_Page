@@ -1,14 +1,23 @@
-import {useRef} from "react";
-import {useGLTF} from "@react-three/drei";
+import { useRef } from "react";
+import { useGLTF, Center } from "@react-three/drei";
+import useRotation from "../../hooks/useRotation";
+import { scale } from "framer-motion";
 
-export default function Model1({triggerRef}) {
-    const model = useGLTF("/threeDModels/tesla-cyberTruck/scene.gltf");
-    const modelRef = useRef();
+export default function Model1() {
+  const model = useGLTF("/threeDModels/teslaModelS/scene.gltf");
+  const modelRef = useRef();
 
-    // useScrollFadeIn(modelRef, triggerRef);
-    return (
-        <group ref={modelRef}>
-            <primitive object={model.scene} scale={2} rotation={[0, 0.4, 0]}/>
-        </group>
-    );
+  useRotation(modelRef, 0.01);
+  return (
+    <group ref={modelRef} position={[0, -0.5, 1]}>
+      <Center>
+        <primitive
+          ref={modelRef}
+          object={model.scene}
+          scale={161}
+          position={[0, 0, 0]}
+        />
+      </Center>
+    </group>
+  );
 }

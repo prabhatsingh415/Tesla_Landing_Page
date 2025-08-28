@@ -1,11 +1,11 @@
 Model Information:
-* title:	Tesla model 3
-* source:	https://sketchfab.com/3d-models/tesla-model-3-5af35a4772f240039a6e58c58998555b
-* author:	dannzjs (https://sketchfab.com/dannzjs)
+* title:	Tesla Model 3 (Realistic Graphics)
+* source:	https://sketchfab.com/3d-models/tesla-model-3-realistic-graphics-4cf4fa457fbe4f32808348d7b8a13939
+* author:	ChoochooLi (https://sketchfab.com/ChoochooLi)
 
 Model License:
 * license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
 * requirements:	Author must be credited. Commercial use is allowed.
 
 If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
-This work is based on "Tesla model 3" (https://sketchfab.com/3d-models/tesla-model-3-5af35a4772f240039a6e58c58998555b) by dannzjs (https://sketchfab.com/dannzjs) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+This work is based on "Tesla Model 3 (Realistic Graphics)" (https://sketchfab.com/3d-models/tesla-model-3-realistic-graphics-4cf4fa457fbe4f32808348d7b8a13939) by ChoochooLi (https://sketchfab.com/ChoochooLi) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
