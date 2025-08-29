@@ -2,7 +2,9 @@ import { useRef } from "react";
 import { useGLTF, Center } from "@react-three/drei";
 import useRotation from "../../hooks/useRotation";
 
-export default function Model1() {
+useGLTF.preload("/threeDModels/tesla_model_3/scene.gltf");
+
+export default function Model3() {
   const model = useGLTF("/threeDModels/tesla_model_3/scene.gltf");
   const modelRef = useRef();
 

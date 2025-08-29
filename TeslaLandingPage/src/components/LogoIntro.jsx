@@ -1,100 +1,130 @@
-import {useEffect, useRef, useState} from "react"
-import {Center, Environment, OrbitControls, useGLTF} from "@react-three/drei";
-import {Canvas, useFrame} from "@react-three/fiber";
+import { useRef, useState } from "react";
+import { Center, Environment, OrbitControls, useGLTF } from "@react-three/drei";
+import { Canvas, useFrame } from "@react-three/fiber";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useGSAP } from "@gsap/react";
 
-const Teslalogo = () => {
-    const gltf = useGLTF("/threeDModels/tesla-logo/source/tesla/tesla.gltf")
-    const ref = useRef(null);
+gsap.registerPlugin(ScrollTrigger);
 
-    const timer = useRef(0);
-    const speed = useRef(0.75);
+const Teslalogo = ({ play }) => {
+  const gltf = useGLTF("/threeDModels/tesla-logo/source/tesla/tesla.gltf");
+  const ref = useRef(null);
 
-    useFrame((state, delta) => {
-        timer.current += delta;    // adding the time
+  const timer = useRef(0);
+  const speed = useRef(0.75);
 
-        if (timer.current > 4 && timer.current <= 6) {   // if the time of animation is > 3 and <= 5 th
-            speed.current = 12;                         // increase the rotation speed
-        }
+  useFrame((state, delta) => {
+    if (!play) return; // ✅ only animate when play = true
 
-        if (timer.current > 5) {       // Then after a 2 sec reset the timer to normal the rotation speed
-            speed.current = 0.75;
-            timer.current = 0;
-        }
+    timer.current += delta;
 
-        ref.current.rotation.y += speed.current * delta // adding a rotating animation on logo model
-    })
-    return (
+    if (timer.current > 4 && timer.current <= 6) {
+      speed.current = 12;
+    }
 
-        <group ref={ref} position={[0, 0.75, 0]}>
-            <Center>
-                <primitive object={gltf.scene} scale={0.75}/>
-                //projecting model on screen
-            </Center>
-        </group>
-    );
-}
+    if (timer.current > 6) {
+      speed.current = 0.75;
+      timer.current = 0;
+    }
+
+    ref.current.rotation.y += speed.current * delta;
+  });
+
+  return (
+    <group ref={ref} position={[0, 0.75, 0]}>
+      <Center>
+        <primitive object={gltf.scene} scale={0.75} />
+      </Center>
+    </group>
+  );
+};
 
 function LogoIntro() {
+  const [fadeOut, setFadeOut] = useState(false);
+  const [play, setPlay] = useState(false);
+  const sectionRef = useRef(null);
 
-    const [fadeOut, setFadeOut] = useState(false);
-    const lastScrollY = useRef(0);
+  // ✅ ScrollTrigger with useGSAP
+  useGSAP(() => {
+    const st = ScrollTrigger.create({
+      trigger: sectionRef.current,
+      start: "top center",
+      end: "bottom center",
+      onEnter: () => setPlay(true),
+      onLeave: () => setPlay(false),
+      onEnterBack: () => setPlay(true),
+      onLeaveBack: () => setPlay(false),
+    });
 
-    useEffect(() => {
+    return () => st.kill(); // cleanup only this instance
+  }, []);
 
-        const handleScroll = () => {
-            const currentScrollY = window.scrollY;
+  // ✅ Text fade effect (simple scroll listener)
+  useGSAP(() => {
+    const handleScroll = () => {
+      setFadeOut(window.scrollY > 50);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
-            if (currentScrollY > lastScrollY.current) {
-                // 👇 Scrolling down
-                setFadeOut(true);
-            } else {
-                // 👆 Scrolling up
-                setFadeOut(false);
-            }
+  return (
+    <div
+      ref={sectionRef}
+      className="flex flex-wrap items-center justify-center "
+    >
+      <div className="w-full h-[80vh] min-h-[400px] relative z-10">
+        <Canvas>
+          <ambientLight intensity={0.5} />
+          <Environment preset="sunset" />
+          <directionalLight position={[0, 2, 5]} />
+          <spotLight
+            position={[0, 0, -2]}
+            angle={1}
+            intensity={20}
+            penumbra={0.5}
+            color="red"
+            castShadow
+          />
+          {/* 🎯 Animation only when visible */}
+          <Teslalogo play={play} />
 
-            lastScrollY.current = currentScrollY; // Update the scroll position
-        }
-        window.addEventListener("scroll", handleScroll);
-        return () => {
-            window.removeEventListener("scroll", handleScroll);
-        }
-    })
-    return (
-        <div className="flex flex-wrap items-center justify-center ">
-            <div className="w-full h-[80vh] min-h-[400px] relative z-10">
-                <Canvas>
-                    <ambientLight intensity={0.5}/>
-                    <Environment preset="sunset"/>
-                    <directionalLight position={[0, 2, 5]}/>
-                    <spotLight
-                        position={[0, 0, -2]}
-                        angle={1}
-                        intensity={20}
-                        penumbra={0.5}
-                        color="red"
-                        castShadow
-                        target-position={[0, 1, 5]} // aim at the logo
-                    />
-                    <Teslalogo/>
-                    <OrbitControls enableZoom={false}
-                                   minPolarAngle={Math.PI / 2} // to prevent the vertical control over the logo model
-                                   maxPolarAngle={Math.PI / 2}/>
-                </Canvas>
-            </div>
-            <div className="w-full absolute bottom-10 text-center">
-                <h1 className={`text-[var(--color-bright-white)] text-6xl lg:text-[100px] uppercase animate__animated animate__fadeIn animate__slower ${fadeOut ? "animate__fadeOut" : "animate__fadeIn"}`}>Tesla</h1>
+          <OrbitControls
+            enableZoom={false}
+            minPolarAngle={Math.PI / 2}
+            maxPolarAngle={Math.PI / 2}
+          />
+        </Canvas>
+      </div>
 
-                <p className={`text-[var(--color-tesla-red)] text-2xl italic animate__animated animate__fadeIn animate__slower ${fadeOut ? "animate__fadeOut" : "animate__fadeIn"}`}>
-                    Accelerating the Future
-                </p>
+      <div className="w-full absolute bottom-10 text-center">
+        <h1
+          className={`text-[var(--color-bright-white)] text-6xl lg:text-[100px] uppercase animate__animated animate__fadeIn animate__slower ${
+            fadeOut ? "animate__fadeOut" : "animate__fadeIn"
+          }`}
+        >
+          Tesla
+        </h1>
 
-                <p className={`text-[var(--color-shadow-gray)] text-lg animate__animated animate__fadeIn animate__slower ${fadeOut ? "animate__fadeOut" : "animate__fadeIn"}`}>
-                    A project by Prabhat Singh
-                </p>
-            </div>
+        <p
+          className={`text-[var(--color-tesla-red)] text-2xl italic animate__animated animate__fadeIn animate__slower ${
+            fadeOut ? "animate__fadeOut" : "animate__fadeIn"
+          }`}
+        >
+          Accelerating the Future
+        </p>
 
-        </div>
-    );
+        <p
+          className={`text-[var(--color-shadow-gray)] text-lg animate__animated animate__fadeIn animate__slower ${
+            fadeOut ? "animate__fadeOut" : "animate__fadeIn"
+          }`}
+        >
+          A project by Prabhat Singh
+        </p>
+      </div>
+    </div>
+  );
 }
 
 export default LogoIntro;

@@ -1,8 +1,8 @@
 import { useRef } from "react";
 import { useGLTF, Center } from "@react-three/drei";
 import useRotation from "../../hooks/useRotation";
-import { scale } from "framer-motion";
 
+useGLTF.preload("/threeDModels/tesla_roadster_2020/scene.gltf");
 export default function Model1() {
   const model = useGLTF("/threeDModels/tesla_roadster_2020/scene.gltf");
   const modelRef = useRef();

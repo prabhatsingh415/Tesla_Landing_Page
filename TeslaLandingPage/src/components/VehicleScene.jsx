@@ -1,4 +1,3 @@
-// VehicleScene.jsx
 import { Suspense, useMemo } from "react";
 import { Canvas } from "@react-three/fiber";
 import {
@@ -25,11 +24,8 @@ export default function VehicleScene({
       shadows={false}
       className="absolute inset-0"
     >
-      {/* Adaptive performance */}
       <AdaptiveDpr pixelated />
       <AdaptiveEvents />
-
-      {/* Simple optimized lighting */}
       <Environment preset={envPreset} />
       <ambientLight intensity={ambientIntensity} />
 
@@ -37,7 +33,6 @@ export default function VehicleScene({
         <Model />
       </Suspense>
 
-      {/* Universal controls */}
       <OrbitControls
         enableZoom={false}
         minPolarAngle={Math.PI / 2}
