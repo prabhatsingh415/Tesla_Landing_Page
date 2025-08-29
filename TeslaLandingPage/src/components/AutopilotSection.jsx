@@ -26,24 +26,22 @@ export default function AutopilotSection() {
   return (
     <section
       id="autopilot"
-      className="relative w-full h-screen overflow-hidden scrollbar-hide my-32"
+      className="relative w-full h-screen overflow-hidden"
     >
-      {/* Background Video */}
       <video
+        src={bgVideo}
         autoPlay
         muted
         loop
         playsInline
-        className="absolute inset-0 w-full h-full object-cover"
-      >
-        <source src={bgVideo} type="video/mp4" />
-      </video>
+        className="absolute top-4 left-4 right-4 bottom-4 w-[calc(100%-2rem)] h-[calc(100%-2rem)] object-cover rounded-2xl"
+      />
 
       {/* Overlay */}
       <div className="absolute inset-0 bg-black/50"></div>
 
       {/* Content */}
-      <div className="relative z-10 h-full flex flex-col justify-center items-start px-10 text-white space-y-6">
+      <div className="relative z-10 h-full flex flex-col justify-center items-start px-10 text-[var(--color-tesla-red)] space-y-6">
         <h2 className="text-4xl md:text-6xl font-bold opacity-0 translate-y-10 autopilot-animate">
           Autopilot
         </h2>

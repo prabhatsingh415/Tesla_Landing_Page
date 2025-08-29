@@ -8,6 +8,8 @@ import LogoIntro from "./components/LogoIntro.jsx";
 import Footer from "./components/Footer.jsx";
 import VehicleSection from "./components/VehicleSection.jsx";
 import AutopilotSection from "./components/AutopilotSection.jsx";
+import ChargingNetwork from "./components/ChargingNetwork.jsx";
+import OtherProducts from "./components/OtherProducts.jsx";
 
 // Register GSAP plugin
 gsap.registerPlugin(ScrollTrigger);
@@ -44,6 +46,8 @@ function App() {
       <LogoIntro />
       <VehicleSection />
       <AutopilotSection />
+      <ChargingNetwork />
+      <OtherProducts />
       <Footer />
     </div>
   );
