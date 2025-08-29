@@ -1,5 +1,3 @@
-import React from "react";
-
 function DetailsCard({ modelName, topSpeed, range, battery, price }) {
   return (
     <div

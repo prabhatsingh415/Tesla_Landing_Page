@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import { useRef } from "react";
 import Lottie from "lottie-react";
 import xIcon from "../assets/icons/x.json";
 import linkedinIcon from "../assets/icons/linkedin.json";
@@ -11,7 +11,6 @@ function Footer() {
 
   return (
     <div className="w-full  grid gap-2 p-8 lg:grid-cols-12 bg-[var(--color-steel-gray)] border-4 border-[var(--color-neon)] rounded-xl shadow-[0_0_30px_5px_var(--color-neon)] text-[var(--color-shadow-gray)]">
-      {/* Column 1: Left Links */}
       <div className="flex flex-col items-center justify-center lg:col-span-3 m-4 ">
         <div className="flex flex-col sm:items-center lg:items-start sm:hidden lg:flex text-sm gap-1 sm:gap-3 m-4">
           <a className="link-underline w-fit" href="/">
@@ -35,7 +34,6 @@ function Footer() {
         </div>
       </div>
 
-      {/* Column 2: Credits */}
       <div className="text-center flex flex-col lg:col-span-6">
         <div className="flex gap-3 justify-center md:mt-8">
           <a

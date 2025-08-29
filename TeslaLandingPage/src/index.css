@@ -1,5 +1,4 @@
 @import "tailwindcss";
-@import "animate.css";
 @import "lenis/dist/lenis.css";
 @import "tailwind-scrollbar-hide/v4";
 
@@ -48,4 +47,30 @@ html {
 
 .link-underline:hover::after {
   width: 100%;
+}
+:root {
+  --scroll-thumb: #e31937;
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--scroll-thumb) transparent;
+}
+
+*::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+*::-webkit-scrollbar-thumb {
+  background-color: var(--scroll-thumb);
+  border-radius: 999px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+  box-shadow: 0 0 8px rgba(227, 25, 55, 0.25);
+}
+*::-webkit-scrollbar-thumb:hover {
+  box-shadow: 0 0 14px rgba(227, 25, 55, 0.35);
 }

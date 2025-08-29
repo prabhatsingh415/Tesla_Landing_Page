@@ -81,8 +81,6 @@ function VehicleSection() {
       sideLightIntensity: 2,
     },
   ];
-
-  // Slide-up animations
   for (let i = 0; i < 4; i++) {
     useSlideUp(titleRefs[i], divRefs[i]);
     useSlideUp(detailsRefs[i], divRefs[i]);
@@ -112,7 +110,8 @@ function VehicleSection() {
       ease: "none",
       scrollTrigger: {
         trigger: section,
-        start: "top top",
+        delay: 1,
+        start: "top-=50 top",
         end: () => `+=${scrollDistance}`,
         scrub: true,
         pin: true,
@@ -125,7 +124,7 @@ function VehicleSection() {
 
   return (
     <>
-      <h1 className="relative text-3xl text-[var(--color-tesla-red)] mt-16 mb-8 inline-block">
+      <h1 className="relative hidden md:block text-3xl text-[var(--color-tesla-red)] mt-16 mb-8 ">
         <span className="relative after:content-[''] after:absolute after:left-0 after:-bottom-2 after:block after:w-full after:h-[3px] after:bg-[var(--color-tesla-red)] after:shadow-[0_0_30px_3px_var(--color-tesla-red)]">
           Vehicles
         </span>
@@ -133,7 +132,7 @@ function VehicleSection() {
 
       <section
         ref={sectionRef}
-        className="w-full h-screen bg-black overflow-x-scroll scroll scrollbar-hide mt-16"
+        className="hidden md:block w-full h-screen bg-black overflow-x-scroll scroll scrollbar-hide mt-16"
       >
         <div ref={scrollRef} className="flex w-[400vw] h-full">
           {models.map((Model, i) => (
@@ -151,7 +150,6 @@ function VehicleSection() {
                 {titles[i]}
               </h1>
 
-              {/* Reusable VehicleScene */}
               <VehicleScene {...details[i]} Model={Model} />
 
               <div ref={detailsRefs[i]}>

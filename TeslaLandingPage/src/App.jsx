@@ -1,3 +1,4 @@
+// App.jsx
 import React, { useEffect, useState, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -14,35 +15,71 @@ import OtherProducts from "./components/OtherProducts.jsx";
 
 gsap.registerPlugin(ScrollTrigger);
 
-function App() {
-  const [resourcesLoaded, setResourcesLoaded] = useState(false);
-  const [showIntro, setShowIntro] = useState(false);
+export default function App() {
+  const [resourcesLoaded, setResourcesLoaded] = useState(false); // true when window 'load' fired (or readyState complete)
+  const [showIntro, setShowIntro] = useState(false); // true => play intro
   const lenisRef = useRef(null);
 
   useEffect(() => {
-    // Disable scroll restoration
+    // disable browser auto-scroll-restoration
     if ("scrollRestoration" in window.history) {
       window.history.scrollRestoration = "manual";
     }
+    // always start at top
     window.scrollTo(0, 0);
 
-    // Agar resources already load ho chuki hain
+    // if page already fully loaded (cached), go ahead
     if (document.readyState === "complete") {
+      console.log("[App] document.readyState === complete -> resourcesLoaded");
+      setResourcesLoaded(true);
+      setShowIntro(true); // start intro immediately
+      return;
+    }
+
+    // otherwise wait for window 'load'
+    const onLoad = () => {
+      console.log("[App] window.load fired -> resourcesLoaded");
       setResourcesLoaded(true);
       setShowIntro(true);
-    } else {
-      // Wait for full page load
-      window.addEventListener("load", () => {
+    };
+
+    window.addEventListener("load", onLoad);
+
+    // safety fallback: if load never fires (rare), clear after 20s to avoid permanent spinner
+    const fallback = setTimeout(() => {
+      if (!resourcesLoaded) {
+        console.warn(
+          "[App] load event timeout -> forcing resourcesLoaded (fallback)"
+        );
         setResourcesLoaded(true);
         setShowIntro(true);
-      });
-    }
-  }, []);
+      }
+    }, 20000);
 
+    return () => {
+      window.removeEventListener("load", onLoad);
+      clearTimeout(fallback);
+    };
+  }, []); // run once
+
+  // Toggle body scroll only while loading/intro shown
+  useEffect(() => {
+    if (!resourcesLoaded || showIntro) {
+      // block scroll while loading or intro
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [resourcesLoaded, showIntro]);
+
+  // init Lenis + sync ScrollTrigger AFTER resourcesLoaded && intro finished
   useEffect(() => {
     if (!resourcesLoaded || showIntro) return;
 
-    // Start Lenis scroll after intro
+    console.log("[App] initializing Lenis + ScrollTrigger");
     const lenis = new Lenis({
       duration: 1.2,
       smooth: true,
@@ -51,46 +88,51 @@ function App() {
     lenisRef.current = lenis;
     lenis.scrollTo(0, { immediate: true });
 
+    let rafId;
     function raf(time) {
       lenis.raf(time);
-      requestAnimationFrame(raf);
+      rafId = requestAnimationFrame(raf);
     }
-    requestAnimationFrame(raf);
+    rafId = requestAnimationFrame(raf);
 
     lenis.on("scroll", ScrollTrigger.update);
     setTimeout(() => ScrollTrigger.refresh(), 100);
 
     return () => {
+      cancelAnimationFrame(rafId);
       lenis.destroy();
+      lenisRef.current = null;
     };
   }, [resourcesLoaded, showIntro]);
 
   return (
     <>
-      {/* Show loading only if resources not yet loaded */}
+      {/* Loading overlay — show while resources not fully loaded */}
       {!resourcesLoaded && (
-        <div className="fixed top-0 left-0 w-screen h-screen bg-black z-50 flex items-center justify-center">
-          <span className="text-white text-3xl animate-pulse">Loading...</span>
+        <div
+          id="site-loading-overlay"
+          className="fixed inset-0 z-[9999] flex items-center justify-center bg-black text-white"
+        >
+          <span className="text-xl md:text-3xl animate-pulse">Loading...</span>
         </div>
       )}
 
-      {/* Show intro video */}
-      {showIntro && (
+      {/* Intro video — shown only when resourcesLoaded true and until it calls onFinish */}
+      {resourcesLoaded && showIntro && (
         <IntroVideo
           onFinish={() => {
+            // hide intro, then ensure Lenis scrollTo(0)
             setShowIntro(false);
-            if (lenisRef.current)
-              lenisRef.current.scrollTo(0, { immediate: true });
+            // small RAF to ensure DOM updates applied
+            requestAnimationFrame(() => {
+              lenisRef.current?.scrollTo(0, { immediate: true });
+            });
           }}
         />
       )}
 
-      {/* Page content */}
-      <div
-        className={`flex flex-col gap-32 lg:gap-[10vh] ${
-          !resourcesLoaded || showIntro ? "pointer-events-none" : ""
-        }`}
-      >
+      {/* Page content (always in DOM; overlay/intro control interaction via body overflow and overlays above) */}
+      <div className="flex flex-col gap-32 lg:gap-[10vh]">
         <Header />
         <LogoIntro />
         <VehicleSection />
@@ -102,5 +144,3 @@ function App() {
     </>
   );
 }
-
-export default App;

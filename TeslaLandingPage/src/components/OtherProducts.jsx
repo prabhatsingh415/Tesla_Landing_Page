@@ -76,7 +76,6 @@ export default function OtherProducts() {
           pagination={{ clickable: true }}
           className="py-8"
           onSwiper={(swiper) => {
-            // Delay execution for refs to be defined
             setTimeout(() => {
               swiper.params.navigation.prevEl = prevRef.current;
               swiper.params.navigation.nextEl = nextRef.current;
@@ -122,7 +121,6 @@ export default function OtherProducts() {
           ))}
         </Swiper>
 
-        {/* Navigation Arrows */}
         <div
           ref={prevRef}
           className="absolute top-1/2 left-0 transform -translate-y-1/2 cursor-pointer z-20 text-white text-3xl"

@@ -34,7 +34,6 @@ export default function ChargingNetwork() {
         />
       </div>
 
-      {/* Content Below */}
       <div className="relative z-10 text-center text-[var(--color-tesla-red)] max-w-4xl px-6 py-16">
         <h2 className="text-4xl md:text-6xl font-bold mb-6 charge-animate opacity-0 translate-y-6">
           Find Your Charge
@@ -44,7 +43,6 @@ export default function ChargingNetwork() {
           available near you.
         </p>
 
-        {/* Stats */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-10 mb-12">
           <div className="charge-animate opacity-0 translate-y-6">
             <h3 className="text-5xl font-bold">32,783</h3>
@@ -56,7 +54,6 @@ export default function ChargingNetwork() {
           </div>
         </div>
 
-        {/* Buttons */}
         <div className="flex flex-col sm:flex-row justify-center gap-4 charge-animate opacity-0 translate-y-6">
           <button className="px-6 py-3 bg-[var(--color-tesla-red)] text-black font-semibold rounded-lg hover:bg-gray-200 transition">
             View Network

@@ -15,7 +15,7 @@ const Teslalogo = ({ play }) => {
   const speed = useRef(0.75);
 
   useFrame((state, delta) => {
-    if (!play) return; // ✅ only animate when play = true
+    if (!play) return;
 
     timer.current += delta;
 
@@ -45,7 +45,6 @@ function LogoIntro() {
   const [play, setPlay] = useState(false);
   const sectionRef = useRef(null);
 
-  // ✅ ScrollTrigger with useGSAP
   useGSAP(() => {
     const st = ScrollTrigger.create({
       trigger: sectionRef.current,
@@ -57,10 +56,9 @@ function LogoIntro() {
       onLeaveBack: () => setPlay(false),
     });
 
-    return () => st.kill(); // cleanup only this instance
+    return () => st.kill();
   }, []);
 
-  // ✅ Text fade effect (simple scroll listener)
   useGSAP(() => {
     const handleScroll = () => {
       setFadeOut(window.scrollY > 50);
@@ -87,7 +85,7 @@ function LogoIntro() {
             color="red"
             castShadow
           />
-          {/* 🎯 Animation only when visible */}
+
           <Teslalogo play={play} />
 
           <OrbitControls
@@ -98,7 +96,7 @@ function LogoIntro() {
         </Canvas>
       </div>
 
-      <div className="w-full absolute bottom-10 text-center">
+      <div className="w-full mt-[-210px] bottom-10 text-center">
         <h1
           className={`text-[var(--color-bright-white)] text-6xl lg:text-[100px] uppercase animate__animated animate__fadeIn animate__slower ${
             fadeOut ? "animate__fadeOut" : "animate__fadeIn"

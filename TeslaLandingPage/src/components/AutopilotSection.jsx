@@ -12,12 +12,12 @@ export default function AutopilotSection() {
         opacity: 1,
         y: 0,
         duration: 1,
-        delay: i * 2,
+        delay: i * 0.3,
         scrollTrigger: {
           trigger: "#autopilot",
           start: "top 50%",
           toggleActions: "play none none reverse",
-          scrub: true,
+          scrub: 0.5,
         },
       });
     });
@@ -26,7 +26,7 @@ export default function AutopilotSection() {
   return (
     <section
       id="autopilot"
-      className="relative w-full h-screen overflow-hidden"
+      className="relative w-full min-h-[80vh] md:h-screen overflow-hidden"
     >
       <video
         src={bgVideo}
@@ -34,23 +34,21 @@ export default function AutopilotSection() {
         muted
         loop
         playsInline
-        className="absolute top-4 left-4 right-4 bottom-4 w-[calc(100%-2rem)] h-[calc(100%-2rem)] object-cover rounded-2xl"
+        className="absolute inset-0 w-full h-full object-cover rounded-2xl"
       />
 
-      {/* Overlay */}
       <div className="absolute inset-0 bg-black/50"></div>
 
-      {/* Content */}
-      <div className="relative z-10 h-full flex flex-col justify-center items-start px-10 text-[var(--color-tesla-red)] space-y-6">
-        <h2 className="text-4xl md:text-6xl font-bold opacity-0 translate-y-10 autopilot-animate">
+      <div className="relative z-10 flex flex-col justify-center items-start h-full px-6 sm:px-10 md:px-20 lg:px-32 text-white space-y-6">
+        <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold opacity-0 translate-y-10 autopilot-animate">
           Autopilot
         </h2>
-        <p className="max-w-xl text-lg md:text-xl opacity-0 translate-y-10 autopilot-animate">
+        <p className="max-w-full sm:max-w-lg md:max-w-xl text-base sm:text-lg md:text-xl opacity-0 translate-y-10 autopilot-animate">
           Experience the future of driving with Tesla Autopilot — advanced
           safety and convenience features designed to assist you on every
           journey.
         </p>
-        <ul className="space-y-4 text-lg md:text-xl">
+        <ul className="space-y-3 sm:space-y-4 text-sm sm:text-base md:text-lg lg:text-xl">
           <li className="opacity-0 translate-y-10 autopilot-animate">
             🚗 Automatic Lane Change
           </li>
