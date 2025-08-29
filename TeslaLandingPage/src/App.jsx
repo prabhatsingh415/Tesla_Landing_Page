@@ -15,77 +15,90 @@ import OtherProducts from "./components/OtherProducts.jsx";
 gsap.registerPlugin(ScrollTrigger);
 
 function App() {
-  const [loading, setLoading] = useState(true);
+  const [resourcesLoaded, setResourcesLoaded] = useState(false);
+  const [showIntro, setShowIntro] = useState(false);
   const lenisRef = useRef(null);
 
-  // Full-page splash / loading control
   useEffect(() => {
-    // Disable browser scroll restoration
+    // Disable scroll restoration
     if ("scrollRestoration" in window.history) {
       window.history.scrollRestoration = "manual";
     }
+    window.scrollTo(0, 0);
 
-    window.scrollTo(0, 0); // force scroll top
+    // Agar resources already load ho chuki hain
+    if (document.readyState === "complete") {
+      setResourcesLoaded(true);
+      setShowIntro(true);
+    } else {
+      // Wait for full page load
+      window.addEventListener("load", () => {
+        setResourcesLoaded(true);
+        setShowIntro(true);
+      });
+    }
   }, []);
 
   useEffect(() => {
-    if (!loading) {
-      // Initialize Lenis when loading is done
-      const lenis = new Lenis({
-        duration: 1.2,
-        smooth: true,
-        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      });
-      lenisRef.current = lenis;
+    if (!resourcesLoaded || showIntro) return;
 
-      lenis.scrollTo(0, { immediate: true });
+    // Start Lenis scroll after intro
+    const lenis = new Lenis({
+      duration: 1.2,
+      smooth: true,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+    });
+    lenisRef.current = lenis;
+    lenis.scrollTo(0, { immediate: true });
 
-      function raf(time) {
-        lenis.raf(time);
-        requestAnimationFrame(raf);
-      }
+    function raf(time) {
+      lenis.raf(time);
       requestAnimationFrame(raf);
-
-      lenis.on("scroll", ScrollTrigger.update);
-
-      setTimeout(() => {
-        ScrollTrigger.refresh();
-      }, 100);
-
-      return () => {
-        lenis.destroy();
-      };
     }
-  }, [loading]);
+    requestAnimationFrame(raf);
+
+    lenis.on("scroll", ScrollTrigger.update);
+    setTimeout(() => ScrollTrigger.refresh(), 100);
+
+    return () => {
+      lenis.destroy();
+    };
+  }, [resourcesLoaded, showIntro]);
 
   return (
     <>
-      {/* Splash screen while loading */}
-      {loading && (
+      {/* Show loading only if resources not yet loaded */}
+      {!resourcesLoaded && (
         <div className="fixed top-0 left-0 w-screen h-screen bg-black z-50 flex items-center justify-center">
           <span className="text-white text-3xl animate-pulse">Loading...</span>
         </div>
       )}
 
-      {/* Main content only renders when loading is false */}
-      {!loading && (
-        <div className="flex flex-col gap-32 lg:gap-[10vh]">
-          <Header />
-          <LogoIntro />
-          <VehicleSection />
-          <AutopilotSection />
-          <ChargingNetwork />
-          <OtherProducts />
-          <Footer />
-        </div>
+      {/* Show intro video */}
+      {showIntro && (
+        <IntroVideo
+          onFinish={() => {
+            setShowIntro(false);
+            if (lenisRef.current)
+              lenisRef.current.scrollTo(0, { immediate: true });
+          }}
+        />
       )}
 
-      {/* Intro video (always rendered but triggers end callback) */}
-      <IntroVideo
-        onFinish={() => {
-          setLoading(false); // hide splash screen after intro finishes
-        }}
-      />
+      {/* Page content */}
+      <div
+        className={`flex flex-col gap-32 lg:gap-[10vh] ${
+          !resourcesLoaded || showIntro ? "pointer-events-none" : ""
+        }`}
+      >
+        <Header />
+        <LogoIntro />
+        <VehicleSection />
+        <AutopilotSection />
+        <ChargingNetwork />
+        <OtherProducts />
+        <Footer />
+      </div>
     </>
   );
 }
