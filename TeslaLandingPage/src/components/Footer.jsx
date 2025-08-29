@@ -10,7 +10,7 @@ function Footer() {
   const githubRef = useRef(null);
 
   return (
-    <div className="w-full  grid gap-2 p-8 lg:grid-cols-12 bg-[var(--color-steel-gray)] border-4 border-[var(--color-neon)] rounded-xl shadow-[0_0_30px_5px_var(--color-neon)] text-[var(--color-shadow-gray)]">
+    <div className="w-full  grid gap-2 p-8 lg:grid-cols-12 bg-[var(--color-steel-gray)] border-4 border-[var(--color-neon)] mb-4 rounded-xl shadow-[0_0_30px_5px_var(--color-neon)] text-[var(--color-shadow-gray)]">
       <div className="flex flex-col items-center justify-center lg:col-span-3 m-4 ">
         <div className="flex flex-col sm:items-center lg:items-start sm:hidden lg:flex text-sm gap-1 sm:gap-3 m-4">
           <a className="link-underline w-fit" href="/">
