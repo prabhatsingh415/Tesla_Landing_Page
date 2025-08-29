@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Lenis from "lenis";
@@ -12,86 +12,81 @@ import AutopilotSection from "./components/AutopilotSection.jsx";
 import ChargingNetwork from "./components/ChargingNetwork.jsx";
 import OtherProducts from "./components/OtherProducts.jsx";
 
-// Register GSAP plugin
 gsap.registerPlugin(ScrollTrigger);
 
 function App() {
-  const [isIntroPlaying, setIsIntroPlaying] = useState(true);
+  const [loading, setLoading] = useState(true);
+  const lenisRef = useRef(null);
 
+  // Full-page splash / loading control
   useEffect(() => {
-    // Browser scroll restoration ko disable karo
+    // Disable browser scroll restoration
     if ("scrollRestoration" in window.history) {
       window.history.scrollRestoration = "manual";
     }
-    // Force scroll to top on mount
-    window.scrollTo(0, 0);
 
-    // Intro video ke liye 4 sec ka timer
-    const timer = setTimeout(() => {
-      setIsIntroPlaying(false);
-    }, 4000);
-
-    return () => {
-      clearTimeout(timer);
-    };
+    window.scrollTo(0, 0); // force scroll top
   }, []);
 
   useEffect(() => {
-    let lenis;
-
-    if (isIntroPlaying) {
-      // Intro ke time scroll lock karo
-      document.body.classList.add("no-scroll");
-    } else {
-      // Intro khatam hone ke baad scroll unlock aur Lenis start
-      document.body.classList.remove("no-scroll");
-
-      lenis = new Lenis({
+    if (!loading) {
+      // Initialize Lenis when loading is done
+      const lenis = new Lenis({
         duration: 1.2,
         smooth: true,
         easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       });
+      lenisRef.current = lenis;
 
-      // Force scroll to top with Lenis
       lenis.scrollTo(0, { immediate: true });
 
-      // GSAP ticker ke saath Lenis sync karo (RAF se better hai)
-      gsap.ticker.add((time) => {
-        lenis.raf(time * 1000);
-      });
-      gsap.ticker.lagSmoothing(0);
+      function raf(time) {
+        lenis.raf(time);
+        requestAnimationFrame(raf);
+      }
+      requestAnimationFrame(raf);
 
-      // Lenis scroll events ko ScrollTrigger ke saath sync
       lenis.on("scroll", ScrollTrigger.update);
 
-      // Thodi der baad ScrollTrigger refresh karo (layout settle hone ke liye)
       setTimeout(() => {
         ScrollTrigger.refresh();
       }, 100);
-    }
 
-    return () => {
-      if (lenis) {
+      return () => {
         lenis.destroy();
-        gsap.ticker.remove((time) => {
-          lenis.raf(time * 1000);
-        });
-      }
-      document.body.classList.remove("no-scroll");
-    };
-  }, [isIntroPlaying]);
+      };
+    }
+  }, [loading]);
 
   return (
-    <div className="flex flex-col gap-32 lg:gap-[10vh]">
-      <IntroVideo setIsIntroPlaying={setIsIntroPlaying} />
-      <Header />
-      <LogoIntro />
-      <VehicleSection />
-      <AutopilotSection />
-      <ChargingNetwork />
-      <OtherProducts />
-      <Footer />
-    </div>
+    <>
+      {/* Splash screen while loading */}
+      {loading && (
+        <div className="fixed top-0 left-0 w-screen h-screen bg-black z-50 flex items-center justify-center">
+          <span className="text-white text-3xl animate-pulse">Loading...</span>
+        </div>
+      )}
+
+      {/* Main content only renders when loading is false */}
+      {!loading && (
+        <div className="flex flex-col gap-32 lg:gap-[10vh]">
+          <Header />
+          <LogoIntro />
+          <VehicleSection />
+          <AutopilotSection />
+          <ChargingNetwork />
+          <OtherProducts />
+          <Footer />
+        </div>
+      )}
+
+      {/* Intro video (always rendered but triggers end callback) */}
+      <IntroVideo
+        onFinish={() => {
+          setLoading(false); // hide splash screen after intro finishes
+        }}
+      />
+    </>
   );
 }
 
